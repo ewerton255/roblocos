@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Roblocos</title>
+    <h:outputStylesheet library="css" name="style.css"/>
+    <h:outputScript library="js" name="script.js"/>
+</h:head>
+<h:body>
+    <header class="header-container">
+        <div class="logo">
+            <div class="logo-img"></div>
+        </div>
+        <h:form styleClass="header-menu">
+            <div class="menus">
+                <p:menubar style="background: transparent !important; border: none !important;">
+                    <p:menuitem value="Início" url="http://www.primefaces.org" icon="pi pi-times"/>
+                    <p:menuitem value="Dicas" icon="pi pi-times"/>
+                    <p:menuitem value="Sobre" ajax="true" immediate="true" onclick="PF('dlgSobre').show()"
+                                icon="pi pi-times"/>
+                </p:menubar>
+            </div>
+            <div class="options">
+                <h:panelGrid columns="2">
+                    <h:outputText value="Porta:"/>
+                    <p:selectOneMenu>
+                        <f:selectItem itemLabel="Nenhuma"/>
+                        <f:selectItem itemLabel="Teste 1"/>
+                        <f:selectItem itemLabel="Teste 2"/>
+                        <f:selectItem itemLabel="Teste 3"/>
+                        <f:selectItem itemLabel="Teste 4"/>
+                    </p:selectOneMenu>
+                </h:panelGrid>
+            </div>
+        </h:form>
+    </header>
+
+    <aside class="aside-container">
+        <ui:insert name="aside"/>
+    </aside>
+
+    <main>
+        <ui:insert name="body"/>
+    </main>
+
+    <footer>
+        <span>Ferramenta desenvolvida por Ewerton dougllas e Talles Nogueira. Todos os Direitos Reservados @Copyright 2020</span>
+    </footer>
+
+    <ui:include src="/pages/dialogs/dlgSobre.xhtml"/>
+</h:body>
+</html>

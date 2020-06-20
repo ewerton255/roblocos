@@ -1,0 +1,138 @@
+<ui:composition template="pages/templates/templateGeral.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="aside">
+        <h:form id="formAside">
+            <p:fieldset legend="Estruturas" toggleable="true">
+                <p:repeat value="#{roblocosController.enumEstruturas}" var="estrutura">
+                    <p:panelGrid styleClass="semBorda">
+                        <p:row>
+                            <p:column>
+                                <p:commandLink value="#{estrutura.descricao}" styleClass="estrutura-btn" id="estrutura"
+                                               action="#{roblocosController.selecionarEstrutura(estrutura)}"
+                                               update=":formBody, :formBody:blocoPanel"
+                                               title="#{roblocosController.getToolTipButtonEstrutura(estrutura.descricao)}"/>
+                                <p:tooltip for="estrutura" position="right"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </p:repeat>
+            </p:fieldset>
+
+            <br/>
+
+            <p:fieldset legend="Condições" toggleable="true">
+                <p:repeat value="#{roblocosController.enumLogicasMatematica}" var="logica">
+                    <p:panelGrid styleClass="semBorda">
+                        <p:row>
+                            <p:column>
+                                <p:commandLink value="#{logica.descricao}" styleClass="condicao-btn" id="condicao"
+                                               action="#{roblocosController.selecionarCondicao(logica)}"
+                                               update=":formBody, :formBody:blocoPanel"
+                                               title="#{roblocosController.getToolTipButtonCondicao(logica.descricao)}"/>
+                                <p:tooltip for="condicao" position="right"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </p:repeat>
+            </p:fieldset>
+
+            <br/>
+
+            <p:fieldset legend="Movimentos" toggleable="true">
+                <p:repeat value="#{roblocosController.enumMovimentosRobo}" var="movimento">
+                    <p:panelGrid styleClass="semBorda">
+                        <p:row>
+                            <p:column>
+                                <p:commandLink value="#{movimento.descricao}" styleClass="movimento-btn" id="movimento"
+                                               action="#{roblocosController.selecionarAcao(movimento)}"
+                                               update=":formBody, :formBody:blocoPanel"
+                                               title="#{roblocosController.getToolTipoButtonMovimento(movimento.descricao)}"/>
+                                <p:tooltip for="movimento" position="right"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </p:repeat>
+            </p:fieldset>
+        </h:form>
+    </ui:define>
+
+    <ui:define name="body">
+        <h:form id="formBody" styleClass="form-container">
+
+            <p:growl id="msg" showDetail="true"/>
+
+            <div class="column-1">
+                <p:outputPanel rendered="#{roblocosController.estrutura eq null}">
+                    <h3 style="text-align: justify">Clique no menu do lado esquerdo para adicionar uma estrutura...</h3>
+                </p:outputPanel>
+
+                <p:outputPanel styleClass="bloco" rendered="#{roblocosController.estrutura ne null}" id="blocoPanel">
+                    <p:outputPanel>
+                        <p:panelGrid columns="2" styleClass="semBorda">
+                            <h:outputText value="Estrutura:"/>
+                            <h:outputText value="#{roblocosController.obterNomeEstrutura()}"
+                                          styleClass="font-bold"/>
+                        </p:panelGrid>
+
+                        <p:separator/>
+
+                        <p:panelGrid columns="2" styleClass="semBorda">
+                            <h:outputText value="#{roblocosController.obterDescricaoArgumento()}"/>
+                            <p:inputText value="#{roblocosController.estrutura.argumento}">
+                                <p:ajax event="keyup" global="false" update="algoritmo"/>
+                            </p:inputText>
+                            <h:outputText value="Condição"/>
+                            <h:outputText value="#{roblocosController.estrutura.logicaMatematica.descricao}"
+                                          styleClass="font-bold"/>
+                            <h:outputText value="à"/>
+                            <p:inputText value="#{roblocosController.estrutura.condicao}">
+                                <p:ajax event="keyup" global="false" update="algoritmo"/>
+                            </p:inputText>
+                            <h:outputText value="#{roblocosController.obterDescricaoMovimento()}"/>
+                            <h:outputText value="#{roblocosController.estrutura.movimentoRobo.descricao}"
+                                          styleClass="font-bold"/>
+                        </p:panelGrid>
+
+                        <p:separator/>
+
+                        <div align="center">
+                            <p:panelGrid columns="3" styleClass="semBorda">
+
+
+                                <p:commandButton value="Executar" action="#{roblocosController.estrutura.executar()}"
+                                                 ajax="true" update="@form"/>
+
+
+                                <p:commandButton value="Parar" action="#{roblocosController.estrutura.interromper()}"
+                                                 ajax="true" update="@form"/>
+                            </p:panelGrid>
+                        </div>
+                    </p:outputPanel>
+                </p:outputPanel>
+            </div>
+
+            <div class="column-2">
+                <p:outputPanel id="algoritmo">
+                    <h:outputText value="Algoritmo gerado:"/>
+
+                    <p:separator/>
+
+                    <p:outputLabel value="#{roblocosController.estrutura.algoritmo}" escape="false"/>
+                </p:outputPanel>
+            </div>
+
+            <div class="column-3">
+                <div class="block-red"></div>
+                <div class="block-green"></div>
+                <div class="block-yellow"></div>
+                <div class="block-blue"></div>
+            </div>
+
+
+        </h:form>
+    </ui:define>
+</ui:composition>
